@@ -1,7 +1,7 @@
 #para listar las librerias que se estan usando : pip freeze > requeriments.txt
 #uvicorn app:app --reload cada que se guarda va recargar 
 
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Body
 from bd import BD
 from controlador import MoviesController
 from models import Movies
@@ -31,31 +31,36 @@ def getMovie()-> list[Movies]:
 
 #rut Para eliminar
 @app.delete(
-    path='/movies',
+    path='/movies/{id_audiovisual}',
     tags=["Movies"],
-    summary="Eliminar peliculas"
+    summary="Eliminar peliculas",
+    response_model=str
 )
-def deleteMovie()-> dict:
-    return {"objeto":"eliminado"}
+def deleteMovies(id_audiovisual:int=Path(...))->str:
+    respuesta=MoviesController.deleteMovies(id_audiovisual)
+    return respuesta[1]
 
 #para actualizar una pelicula
 @app.put(
     path='/movies',
     tags=["Movies"],
-    summary="Poner peliculas"
+    summary="Poner peliculas",
+    response_model=str
 )
-def putMovie()-> dict:
-    return {"objeto":"ponido"}
+def putMovie(argumento:Movies=Body(...))->str:
+    respuesta=MoviesController.updateMovies(argumento)
+    return respuesta[1]
 
 #para crear una pelicula nueva o añadir
 @app.post(
     path='/movies',
     tags=["Movies"],
-    summary="Publicar peliculas" 
+    summary="Publicar peliculas",
+    response_model=str
 )
-def postMovie()-> dict:
-    return {"objeto":"eliminado"}
-
+def postinsertarMovie(argumento:Movies=Body(...))-> str:
+    respuesta=MoviesController.insertMovie(argumento)
+    return respuesta[1]
 
 #------------------------------------------------------------
 #le añadis un parametro en la ruta pero no sabes que clase es y le pones un nombre generico para usar dp
@@ -63,15 +68,16 @@ def postMovie()-> dict:
 @app.get(
     path='/movies/{id}',
     tags=["Movies"],
-    summary="listar todas las peliculas"
+    summary="listar todas las peliculas",
+    response_model=Movies
 )
 #el nuevo parametro que vos estas esperando le pones en tu funcion y definis el tipo 
 #hay que cambiar el coso que retorna pq lo que hay dentro del id es un diccionario 
 #path path signidica que el parametro que estoy pidiendo es obligatorio
 
-def getOneMovie(id:int=Path(...))-> dict:
-    lista:list=[{"Pelicula":"Titanic"},{"Pelicula":"Fast&Furios"},{"Pelicula":"A star is born"}]
-    return lista[id]
+def getOneMovie(id:int=Path(...))-> Movies: #Esta funcion retorna un objeto del tipo pelicula
+    respuesta=MoviesController.getOneMovie(id)
+    return respuesta[1]
 
 
 
