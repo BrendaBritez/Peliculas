@@ -1,4 +1,4 @@
-
+#Solamente esta aca para conectarse a la base de datos
 import psycopg2 
 from psycopg2.extensions import connection, cursor
 

@@ -1,3 +1,6 @@
+#Se consulta a labase de datos y se crean los modelos con esos datos retornados
+#Se manipula la base de datos con los datos que nos llegan 
+
 from bd import BD
 from models import Movies
 

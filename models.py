@@ -1,4 +1,5 @@
-#
+#representacion del objeto que nosotros creamos en este caso la tabla audiovisual
+
 from pydantic import BaseModel, Field #esta field sive para validar un campo
 #greter o sea mayor que o igual a 1 
 class Movies(BaseModel):
